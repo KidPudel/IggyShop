@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -19,7 +21,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,10 +47,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MyColors.ghostWhite,
 
-                ) {
+                    ) {
                     // create a navigator host and controller for it
                     val navigationController = rememberNavController()
-                    NavHost(navController = navigationController, startDestination = Screens.SignUpScreen.route) {
+                    NavHost(
+                        navController = navigationController,
+                        startDestination = Screens.SignUpScreen.route
+                    ) {
                         composable(route = Screens.SignUpScreen.route) {
                             SignUp(navigationController = navigationController)
                         }
@@ -64,7 +71,10 @@ class MainActivity : ComponentActivity() {
 fun CustomTextField(
     state: MutableState<String>,
     placeholder: String,
+    onValidate: () -> Unit = {},
+    valid: Boolean = true
 ) {
+    val focusManager = LocalFocusManager.current
     BasicTextField(
         value = state.value,
         onValueChange = { entered: String -> state.value = entered },
@@ -80,8 +90,8 @@ fun CustomTextField(
         ),
         maxLines = 1,
         decorationBox = { innerTextField ->
-            Box (contentAlignment = Alignment.Center) {
-                if (state.value.isEmpty()) {
+            Box(contentAlignment = Alignment.Center) {
+                if (state.value.isEmpty() && valid) {
                     Text(
                         text = placeholder,
                         color = Color.Gray,
@@ -89,13 +99,26 @@ fun CustomTextField(
                         fontWeight = FontWeight.Medium,
                         fontSize = 11.sp,
                     )
+                } else if (state.value.isEmpty() && !valid) {
+                    Text(
+                        text = placeholder,
+                        color = Color.Red,
+                        fontFamily = Fonts.montserratFamily,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 11.sp,
+                    )
                 }
                 innerTextField()
             }
-
-        }
+        },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            focusManager.clearFocus()
+            onValidate()
+        })
     )
 }
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {

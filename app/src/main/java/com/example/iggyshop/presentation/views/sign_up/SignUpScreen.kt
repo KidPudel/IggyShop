@@ -35,6 +35,10 @@ fun SignUp(navigationController: NavController) {
     val firstNameState = remember { mutableStateOf(value = "") }
     val lastNameState = remember { mutableStateOf(value = "") }
     val emailState = remember { mutableStateOf(value = "") }
+    val emailPlaceholder = remember {mutableStateOf(value = "Email")}
+    var validState = remember {
+        mutableStateOf(value = true)
+    }
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -65,7 +69,18 @@ fun SignUp(navigationController: NavController) {
 
         CustomTextField(
             state = emailState,
-            placeholder = "Email",
+            placeholder = emailPlaceholder.value,
+            onValidate = {
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailState.value).matches()) {
+                    emailState.value = ""
+                    emailPlaceholder.value = "Invalid email address"
+                    validState.value = false
+                } else {
+                    emailPlaceholder.value = "Email"
+                    validState.value  = true
+                }
+            },
+            valid = validState.value
         )
         Spacer(modifier = Modifier.height(35.dp))
 
@@ -132,7 +147,9 @@ fun SignInWithService(
     vectorResource: Int,
     iconDescription: String?
 ) {
-    Row(horizontalArrangement = Arrangement.Start) {
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        modifier = Modifier.clickable { println(text) }) {
         Icon(
             imageVector = ImageVector.vectorResource(vectorResource),
             contentDescription = iconDescription,
