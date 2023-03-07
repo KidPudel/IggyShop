@@ -36,7 +36,9 @@ import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.presentation.views.login.LoginScreen
 import com.example.iggyshop.presentation.views.sign_up.SignUp
 import com.example.iggyshop.ui.theme.IggyShopTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -7,7 +7,7 @@ interface IUserRepository {
      * get user from database based on email
      * @param email unique email of the user by which user is retrieved
      */
-    suspend fun getUserFromDatabase(email: String): UserDBModel
+    suspend fun getUserFromDatabase(email: String): UserDBModel?
 
     /**
      * add user to database

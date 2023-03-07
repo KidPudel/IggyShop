@@ -7,13 +7,13 @@ import com.example.iggyshop.data.database.model.UserDBModel
 interface UserDao {
     // debugging
     @Query(value = "SELECT * FROM user")
-    fun getAllUsers() : List<UserDBModel>
+    suspend fun getAllUsers() : List<UserDBModel>
 
     // get (check/login)
     @Query(value = "SELECT * FROM user WHERE email LIKE :email")
-    fun getUser(email: String) : UserDBModel
+    suspend fun getUser(email: String) : UserDBModel?
 
     // insert (register)
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insertUser(user: UserDBModel)
+    suspend fun insertUser(user: UserDBModel)
 }
