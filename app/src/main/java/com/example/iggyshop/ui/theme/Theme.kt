@@ -8,14 +8,14 @@ import androidx.compose.runtime.Composable
 import com.example.iggyshop.common.MyColors
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
+    primary = MyColors.iris,
+    primaryVariant = MyColors.iris,
     secondary = Teal200
 )
 
 private val LightColorPalette = lightColors(
     primary = MyColors.iris,
-    primaryVariant = Purple700,
+    primaryVariant = MyColors.iris,
     secondary = Teal200
 
     /* Other default colors to override

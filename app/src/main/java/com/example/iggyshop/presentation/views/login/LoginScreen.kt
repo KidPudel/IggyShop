@@ -10,6 +10,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,7 +44,21 @@ fun LoginScreen(navigationController: NavController) {
         scaffoldState = scaffoldState,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MyColors.ghostWhite)
+            .background(color = MyColors.ghostWhite),
+        topBar = {
+            TopAppBar(
+                title = { Text("Back to sign up") },
+                navigationIcon = ({
+                    IconButton(onClick = { navigationController.popBackStack() }) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_navigation_back),
+                            contentDescription = "back arrow",
+                            tint = Color.Black
+                        )
+                    }
+                }),
+            )
+        }
     ) { scaffoldPadding ->
         Box(modifier = Modifier.padding(paddingValues = scaffoldPadding)) {
             Column(
