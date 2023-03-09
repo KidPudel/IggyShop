@@ -29,6 +29,7 @@ import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.domain.models.User
 import com.example.iggyshop.presentation.view_models.SignUpViewModel
 import com.example.iggyshop.presentation.views.CustomTextField
+import com.example.iggyshop.presentation.views.Screens
 import com.example.iggyshop.presentation.views.isEmailValid
 import com.example.iggyshop.presentation.views.validate
 import kotlinx.coroutines.launch
@@ -130,6 +131,7 @@ fun SignUp(navigationController: NavController) {
                                     )
                                 }
                                 // go to the app
+                                navigationController.navigate(route = Screens.PageOneScreen.route)
                             }
                         }
 
@@ -161,7 +163,7 @@ fun SignUp(navigationController: NavController) {
                     Text(
                         text = "Log in",
                         modifier = Modifier.clickable(onClick = {
-                            navigationController.navigate("login_screen")
+                            navigationController.navigate(Screens.LoginScreen.route)
                         }),
                         fontFamily = montserratFamily,
                         fontWeight = FontWeight.Medium,

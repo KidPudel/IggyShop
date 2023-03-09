@@ -8,4 +8,5 @@ object MyColors {
     val ghostWhite = Color(red = 250, green = 249, blue = 255)
     val iris = Color(red = 78, green = 85, blue = 215)
     val redViolet = Color(red = 206, green = 20, blue = 131)
+    val davysGray = Color(red = 92, green = 92, blue = 92)
 }

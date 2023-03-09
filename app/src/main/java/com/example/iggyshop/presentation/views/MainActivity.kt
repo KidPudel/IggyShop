@@ -1,27 +1,24 @@
 package com.example.iggyshop.presentation.views
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -31,9 +28,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.iggyshop.R
 import com.example.iggyshop.common.Fonts
 import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.presentation.views.login.LoginScreen
+import com.example.iggyshop.presentation.views.page_one.PageOneScreen
 import com.example.iggyshop.presentation.views.sign_up.SignUp
 import com.example.iggyshop.ui.theme.IggyShopTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,8 +58,11 @@ class MainActivity : ComponentActivity() {
                         composable(route = Screens.SignUpScreen.route) {
                             SignUp(navigationController = navigationController)
                         }
-                        composable(Screens.LoginScreen.route) {
+                        composable(route = Screens.LoginScreen.route) {
                             LoginScreen(navigationController = navigationController)
+                        }
+                        composable(route = Screens.PageOneScreen.route) {
+                            PageOneScreen(navigationController = navigationController)
                         }
                     }
                 }
@@ -74,7 +76,8 @@ fun CustomTextField(
     state: MutableState<String>,
     placeholder: String,
     onValidate: () -> Unit = {},
-    valid: Boolean = true
+    valid: Boolean = true,
+    vectorResource: Int? = null
 ) {
     val focusManager = LocalFocusManager.current
     BasicTextField(
@@ -110,6 +113,17 @@ fun CustomTextField(
                         fontSize = 11.sp,
                     )
                 }
+                if (vectorResource != null) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = vectorResource),
+                        contentDescription = "inner image",
+                        tint = MyColors.davysGray,
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .padding(horizontal = 15.dp)
+                    )
+                }
+
                 innerTextField()
             }
         },

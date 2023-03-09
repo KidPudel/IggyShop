@@ -15,10 +15,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.iggyshop.R
 import com.example.iggyshop.common.Fonts
 import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.presentation.view_models.LoginViewModel
 import com.example.iggyshop.presentation.views.CustomTextField
+import com.example.iggyshop.presentation.views.Screens
 import com.example.iggyshop.presentation.views.isEmailValid
 import com.example.iggyshop.presentation.views.validate
 import kotlinx.coroutines.launch
@@ -72,7 +74,11 @@ fun LoginScreen(navigationController: NavController) {
                 )
                 Spacer(modifier = Modifier.height(35.dp))
 
-                CustomTextField(state = passwordState, placeholder = "Password")
+                CustomTextField(
+                    state = passwordState,
+                    placeholder = "Password",
+                    vectorResource = R.drawable.ic_eye_off
+                )
 
 
                 Spacer(modifier = Modifier.height(99.dp))
@@ -84,7 +90,7 @@ fun LoginScreen(navigationController: NavController) {
                             loginViewModel.getUser(email = emailState.value)
                             // check if user is loaded from DB (valid user)
                             if (loginViewModel.state.value.user != null) {
-                                navigationController.navigate(route = "")
+                                navigationController.navigate(route = Screens.PageOneScreen.route)
                             } else {
                                 // show message that user is not registered
                                 currentScope.launch {
