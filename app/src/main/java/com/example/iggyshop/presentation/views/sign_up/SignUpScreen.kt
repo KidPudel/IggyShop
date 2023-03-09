@@ -29,6 +29,8 @@ import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.domain.models.User
 import com.example.iggyshop.presentation.view_models.SignUpViewModel
 import com.example.iggyshop.presentation.views.CustomTextField
+import com.example.iggyshop.presentation.views.isEmailValid
+import com.example.iggyshop.presentation.views.validate
 import kotlinx.coroutines.launch
 
 @Composable
@@ -86,14 +88,11 @@ fun SignUp(navigationController: NavController) {
                     state = emailState,
                     placeholder = emailPlaceholder.value,
                     onValidate = {
-                        if (isEmailValid(emailState.value)) {
-                            emailPlaceholder.value = "Email"
-                            validState.value = true
-                        } else {
-                            emailState.value = ""
-                            emailPlaceholder.value = "Invalid email address"
-                            validState.value = false
-                        }
+                        validate(
+                            emailState = emailState,
+                            placeholderState = emailPlaceholder,
+                            validState = validState
+                        )
                     },
                     valid = validState.value
                 )
@@ -104,7 +103,6 @@ fun SignUp(navigationController: NavController) {
                         // validate that all fields are filled correctly
                         if (firstNameState.value.isNotEmpty() &&
                             lastNameState.value.isNotEmpty() &&
-                            emailState.value.isNotEmpty() &&
                             isEmailValid(emailState.value)
                         ) {
                             // check if user is in database
@@ -131,6 +129,7 @@ fun SignUp(navigationController: NavController) {
                                         duration = SnackbarDuration.Short
                                     )
                                 }
+                                // go to the app
                             }
                         }
 
@@ -216,12 +215,7 @@ private fun SignInWithService(
     }
 }
 
-private fun isEmailValid(email: String): Boolean {
-    if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-        return true
-    }
-    return false
-}
+
 
 
 // TODO: abstract code on sign up actions
