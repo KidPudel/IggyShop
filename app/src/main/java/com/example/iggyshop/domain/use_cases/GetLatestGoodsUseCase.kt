@@ -10,6 +10,6 @@ import javax.inject.Inject
 class GetLatestGoodsUseCase @Inject constructor(private val goodsRepository: IGoodsRepository) {
     suspend fun getLatestGoods(): Flow<List<LatestProduct>> = flow {
         val latestGoodsDto = goodsRepository.getLatestGoods()
-        emit(value = latestGoodsDto.map { it.toLatestProduct() })
+        emit(value = latestGoodsDto.latest.map { it.toLatestProduct() })
     }
 }

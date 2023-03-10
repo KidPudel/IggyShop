@@ -8,22 +8,7 @@ data class FlashSaleProductDto(
     val image_url: String,
     val name: String,
     val price: Double
-) {
-    companion object {
-        /**
-         * returns dummy instance on unsuccessful response
-         */
-        fun onBadResponse(): FlashSaleProductDto {
-            return FlashSaleProductDto(
-                category = "error",
-                discount = 0,
-                image_url = "error",
-                name = "error",
-                price = 0.0
-            )
-        }
-    }
-}
+)
 
 fun FlashSaleProductDto.toFlashSaleProduct(): FlashSaleProduct {
     return FlashSaleProduct(

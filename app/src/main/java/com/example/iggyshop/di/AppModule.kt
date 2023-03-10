@@ -30,6 +30,8 @@ interface AppModule {
     @Singleton
     fun getUserRepository(userRepository: UserRepository): IUserRepository
 
+    @Binds
+    @Singleton
     fun getGoodsRepository(repository: GoodsRepository): IGoodsRepository
 
     companion object {

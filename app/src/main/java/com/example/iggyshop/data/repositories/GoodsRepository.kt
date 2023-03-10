@@ -1,28 +1,30 @@
 package com.example.iggyshop.data.repositories
 
 import com.example.iggyshop.data.remote.IGoodsApi
+import com.example.iggyshop.data.remote.dto.FlashSaleGoodsDto
 import com.example.iggyshop.data.remote.dto.FlashSaleProductDto
+import com.example.iggyshop.data.remote.dto.LatestGoodsDto
 import com.example.iggyshop.data.remote.dto.LatestProductDto
 import com.example.iggyshop.domain.irepositories.IGoodsRepository
 import javax.inject.Inject
 
 class GoodsRepository @Inject constructor(private val goodsApi: IGoodsApi) : IGoodsRepository {
 
-    override suspend fun getLatestGoods(): List<LatestProductDto> {
+    override suspend fun getLatestGoods(): LatestGoodsDto {
         val response = goodsApi.getLatestGoods()
-        var body: List<LatestProductDto>? = null
+        var body: LatestGoodsDto? = null
         if (response.isSuccessful) {
             body = response.body()
         }
-        return body ?: listOf(LatestProductDto.onBadResponse())
+        return body ?: LatestGoodsDto.onBadResponse()
     }
 
-    override suspend fun getFlashSaleGoods(): List<FlashSaleProductDto> {
+    override suspend fun getFlashSaleGoods(): FlashSaleGoodsDto {
         val response = goodsApi.getFlashSaleGoods()
-        var body: List<FlashSaleProductDto>? = null
+        var body: FlashSaleGoodsDto? = null
         if (response.isSuccessful) {
             body = response.body()
         }
-        return body ?: listOf(FlashSaleProductDto.onBadResponse())
+        return body ?: FlashSaleGoodsDto.onBadResponse()
     }
 }

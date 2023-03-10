@@ -10,6 +10,6 @@ import javax.inject.Inject
 class GetFlashSaleGoodsUseCase @Inject constructor(private val goodsRepository: IGoodsRepository) {
     suspend fun getFlashSaleGoods(): Flow<List<FlashSaleProduct>> = flow {
         val flashSaleGoodsDto = goodsRepository.getFlashSaleGoods()
-        emit(value = flashSaleGoodsDto.map { it.toFlashSaleProduct() })
+        emit(value = flashSaleGoodsDto.flash_sale.map { it.toFlashSaleProduct() })
     }
 }
