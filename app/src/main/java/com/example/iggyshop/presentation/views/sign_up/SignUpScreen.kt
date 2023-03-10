@@ -64,7 +64,7 @@ fun SignUp(navigationController: NavController) {
                     .fillMaxSize()
                     .padding(horizontal = 43.dp)
             ) {
-                Spacer(modifier = Modifier.height(151.dp))
+                Spacer(modifier = Modifier.height(121.dp))
                 Text(
                     text = "Sign up",
                     fontWeight = FontWeight.SemiBold,

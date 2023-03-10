@@ -68,7 +68,7 @@ fun LoginScreen(navigationController: NavController) {
                     .fillMaxSize()
                     .padding(horizontal = 43.dp)
             ) {
-                Spacer(modifier = Modifier.height(151.dp))
+                Spacer(modifier = Modifier.height(123.dp))
                 Text(
                     text = "Welcome back",
                     fontWeight = FontWeight.SemiBold,
