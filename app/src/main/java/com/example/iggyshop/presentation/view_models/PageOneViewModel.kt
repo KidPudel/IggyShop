@@ -27,6 +27,10 @@ class PageOneViewModel @Inject constructor(
     val flashSaleGoodsState: State<FlashSaleGoodsState>
         get() = _flashSaleGoodsState
 
+    init {
+        getGoods()
+    }
+
     // get data
     private fun getGoods() {
         viewModelScope.launch(Dispatchers.IO) {
