@@ -7,7 +7,9 @@ import androidx.room.RoomDatabase
 import com.example.iggyshop.common.Constants.BASE_URL
 import com.example.iggyshop.data.database.UsersDatabase
 import com.example.iggyshop.data.remote.IGoodsApi
+import com.example.iggyshop.data.repositories.GoodsRepository
 import com.example.iggyshop.data.repositories.UserRepository
+import com.example.iggyshop.domain.irepositories.IGoodsRepository
 import com.example.iggyshop.domain.irepositories.IUserRepository
 import dagger.Binds
 import dagger.Module
@@ -27,6 +29,8 @@ interface AppModule {
     @Binds
     @Singleton
     fun getUserRepository(userRepository: UserRepository): IUserRepository
+
+    fun getGoodsRepository(repository: GoodsRepository): IGoodsRepository
 
     companion object {
         // get database instance
