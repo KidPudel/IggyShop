@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -16,6 +17,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
@@ -27,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -38,6 +41,7 @@ import com.example.iggyshop.presentation.views.page_one.PageOneScreen
 import com.example.iggyshop.presentation.views.sign_up.SignUp
 import com.example.iggyshop.ui.theme.IggyShopTheme
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.internal.assertThreadHoldsLock
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -65,6 +69,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = Screens.PageOneScreen.route) {
                             PageOneScreen(navigationController = navigationController)
+                        }
+                        composable(route = Screens.ProfileScreen.route) {
+                            ProfileScreen(navigationController = navigationController)
                         }
                     }
                 }
@@ -161,6 +168,37 @@ fun validate(
         validState.value = false
         emailState.value = ""
         placeholderState.value = "Invalid email address"
+    }
+}
+
+@Composable
+fun MyBottomBar(navigationController: NavController) {
+    val currentDestination = navigationController.currentDestination
+    val bottomBarItems = listOf(
+        BottomBarNavItem.Home,
+        BottomBarNavItem.Heart,
+        BottomBarNavItem.ShoppyTrolley,
+        BottomBarNavItem.Message,
+        BottomBarNavItem.Profile,
+    )
+    BottomAppBar(backgroundColor = MyColors.ghostWhite) {
+        BottomNavigation(backgroundColor = MyColors.ghostWhite) {
+            bottomBarItems.forEach { item ->
+                BottomNavigationItem(
+                    selected = item.route == currentDestination?.route,
+                    icon = {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = item.icon),
+                            contentDescription = "bottom bar icon",
+                            tint = Color.Gray
+                        )
+                    },
+                    onClick = {
+                        navigationController.navigate(route = item.route)
+                    }
+                )
+            }
+        }
     }
 }
 
