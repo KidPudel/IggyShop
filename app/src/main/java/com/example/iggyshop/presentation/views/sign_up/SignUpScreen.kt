@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.iggyshop.R
+import com.example.iggyshop.common.Fonts
 import com.example.iggyshop.common.Fonts.montserratFamily
 import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.domain.models.User
@@ -76,12 +77,20 @@ fun SignUp(navigationController: NavController) {
                 CustomTextField(
                     state = firstNameState,
                     placeholder = "First name",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(29.dp)
+                        .background(color = Color.LightGray, shape = RoundedCornerShape(35.dp))
                 )
                 Spacer(modifier = Modifier.height(35.dp))
 
                 CustomTextField(
                     state = lastNameState,
                     placeholder = "Last name",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(29.dp)
+                        .background(color = Color.LightGray, shape = RoundedCornerShape(35.dp))
                 )
                 Spacer(modifier = Modifier.height(35.dp))
 
@@ -95,7 +104,11 @@ fun SignUp(navigationController: NavController) {
                             validState = validState
                         )
                     },
-                    valid = validState.value
+                    valid = validState.value,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(29.dp)
+                        .background(color = Color.LightGray, shape = RoundedCornerShape(35.dp))
                 )
                 Spacer(modifier = Modifier.height(35.dp))
 

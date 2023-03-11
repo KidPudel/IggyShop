@@ -13,12 +13,16 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
@@ -35,6 +39,7 @@ import com.example.iggyshop.R
 import com.example.iggyshop.common.Fonts
 import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.presentation.view_models.PageOneViewModel
+import com.example.iggyshop.presentation.views.CustomTextField
 import java.util.*
 
 @Composable
@@ -43,33 +48,47 @@ fun PageOneScreen(navigationController: NavController) {
     val lazyListState = rememberLazyListState()
     val scaffoldState = rememberScaffoldState()
 
+    val searchState = remember { mutableStateOf(value = "") }
+
     val country = "US"
     val language = "en"
     var currency: String
+
+    val categories: List<Int> = listOf(
+        R.drawable.ic_phone,
+        R.drawable.ic_headphones,
+        R.drawable.ic_controller,
+        R.drawable.ic_car,
+        R.drawable.ic_sleep,
+        R.drawable.ic_robot
+    )
+
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MyColors.ghostWhite)
-    ) { scaffoldPadding ->
-        Box(modifier = Modifier.padding(paddingValues = scaffoldPadding)) {
-            Column(
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
+            .background(color = MyColors.ghostWhite),
+        topBar = {
+            TopAppBar(
+                backgroundColor = MyColors.ghostWhite,
+                elevation = 0.dp,
+                modifier = Modifier.height(80.dp),
             ) {
                 Spacer(Modifier.height(23.dp))
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 15.dp)
+                        .padding(start = 15.dp, end = 15.dp, top = 23.dp)
                 ) {
                     Icon(
+                        modifier = Modifier.padding(bottom = 15.dp),
                         imageVector = ImageVector.vectorResource(R.drawable.ic_burger),
                         contentDescription = "burger button"
                     )
                     Text(
+                        modifier = Modifier.padding(bottom = 15.dp),
                         text = buildAnnotatedString {
                             append(text = "Trade by ")
                             withStyle(
@@ -85,7 +104,15 @@ fun PageOneScreen(navigationController: NavController) {
                         color = Color.Black,
                         fontSize = 20.sp
                     )
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    CompositionLocalProvider(
+                        LocalContentAlpha provides ContentAlpha.high,
+                        LocalTextStyle provides MaterialTheme.typography.h5
+                    ) {
+
+                    }
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Image(
                             painter = painterResource(R.drawable.avatar),
                             contentDescription = "avatar",
@@ -99,7 +126,7 @@ fun PageOneScreen(navigationController: NavController) {
                                 )
                         )
                         Spacer(modifier = Modifier.height(7.dp))
-                        Row {
+                        Row(modifier = Modifier.fillMaxHeight()) {
                             Text(
                                 text = "Location",
                                 fontFamily = Fonts.poppinsFamily,
@@ -116,73 +143,125 @@ fun PageOneScreen(navigationController: NavController) {
                         }
                     }
                 }
+            }
+        }
+    ) { scaffoldPadding ->
+        Box(modifier = Modifier.padding(paddingValues = scaffoldPadding)) {
+            Column(
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
+            ) {
 
-
-
-                Text(
-                    text = "Latest",
+                CustomTextField(
+                    state = searchState,
+                    placeholder = "What are you looking for?",
+                    vectorResource = R.drawable.ic_search,
                     fontFamily = Fonts.poppinsFamily,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
-                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 9.sp,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 11.dp),
-                    textAlign = TextAlign.Start
+                        .width(262.dp)
+                        .height(24.dp)
+                        .background(color = MyColors.whiteSmoke, shape = RoundedCornerShape(35.dp))
                 )
-                LazyRow(state = lazyListState, userScrollEnabled = true, modifier = Modifier.padding(horizontal = 11.dp)) {
-                    items(items = pageOneViewModel.latestGoodsState.value.latestGoods) { latestProduct ->
-
+                Spacer(Modifier.height(17.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Spacer(modifier = Modifier.width(15.dp))
+                    for (category in categories) {
                         Card(
-                            shape = RoundedCornerShape(10.dp),
                             modifier = Modifier
-                                .width(114.dp)
-                                .height(149.dp)
+                                .width(42.11.dp)
+                                .height(38.dp),
+                            backgroundColor = MyColors.antiFlashWhite,
+                            shape = RoundedCornerShape(50.dp),
                         ) {
-                            Box {
-                                AsyncImage(
-                                    model = latestProduct.image_url,
-                                    contentDescription = "image of a product",
-                                    modifier = Modifier.matchParentSize(),
-                                    contentScale = ContentScale.Crop
-                                )
-                                Column(
-                                    verticalArrangement = Arrangement.Bottom,
-                                    horizontalAlignment = Alignment.Start,
-                                    modifier = Modifier.matchParentSize()
-                                ) {
-                                    Card(shape = RoundedCornerShape(50.dp)) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = category),
+                                contentDescription = "category",
+                                modifier = Modifier.padding(horizontal = 13.dp)
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(15.dp))
+                }
+                Row {
+                    Spacer(modifier = Modifier.width(11.dp))
+                    Text(
+                        text = "Latest",
+                        fontFamily = Fonts.poppinsFamily,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black,
+                        fontSize = 15.sp,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Start
+                    )
+
+                }
+
+                Row {
+                    Spacer(modifier = Modifier.width(11.dp))
+                    LazyRow(
+                        state = lazyListState,
+                        userScrollEnabled = true,
+                    ) {
+                        items(items = pageOneViewModel.latestGoodsState.value.latestGoods) { latestProduct ->
+                            Card(
+                                shape = RoundedCornerShape(10.dp),
+                                modifier = Modifier
+                                    .width(114.dp)
+                                    .height(149.dp)
+                            ) {
+                                Box {
+                                    AsyncImage(
+                                        model = latestProduct.image_url,
+                                        contentDescription = "image of a product",
+                                        modifier = Modifier.matchParentSize(),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                    Column(
+                                        verticalArrangement = Arrangement.Bottom,
+                                        horizontalAlignment = Alignment.Start,
+                                        modifier = Modifier.matchParentSize()
+                                    ) {
+                                        Card(shape = RoundedCornerShape(50.dp)) {
+                                            Text(
+                                                text = latestProduct.category,
+                                                fontFamily = Fonts.poppinsFamily,
+                                                fontWeight = FontWeight.SemiBold,
+                                                color = Color.Black,
+                                                fontSize = 6.sp,
+                                                textAlign = TextAlign.Start
+                                            )
+                                        }
                                         Text(
-                                            text = latestProduct.category,
+                                            text = latestProduct.name,
                                             fontFamily = Fonts.poppinsFamily,
                                             fontWeight = FontWeight.SemiBold,
-                                            color = Color.Black,
-                                            fontSize = 6.sp,
+                                            color = Color.White,
+                                            fontSize = 9.sp,
+                                            textAlign = TextAlign.Start
+                                        )
+                                        currency = NumberFormat.getCurrencyInstance(Locale.US)
+                                            .format(latestProduct.price)
+                                        Text(
+                                            text = currency,
+                                            fontFamily = Fonts.poppinsFamily,
+                                            fontWeight = FontWeight.SemiBold,
+                                            color = Color.White,
+                                            fontSize = 7.sp,
                                             textAlign = TextAlign.Start
                                         )
                                     }
-                                    Text(
-                                        text = latestProduct.name,
-                                        fontFamily = Fonts.poppinsFamily,
-                                        fontWeight = FontWeight.SemiBold,
-                                        color = Color.White,
-                                        fontSize = 9.sp,
-                                        textAlign = TextAlign.Start
-                                    )
-                                    currency = NumberFormat.getCurrencyInstance(Locale.US)
-                                        .format(latestProduct.price)
-                                    Text(
-                                        text = currency,
-                                        fontFamily = Fonts.poppinsFamily,
-                                        fontWeight = FontWeight.SemiBold,
-                                        color = Color.White,
-                                        fontSize = 7.sp,
-                                        textAlign = TextAlign.Start
-                                    )
                                 }
                             }
+                            Spacer(modifier = Modifier.width(12.dp))
                         }
-                        Spacer(modifier = Modifier.width(12.dp))
+
                     }
 
                 }

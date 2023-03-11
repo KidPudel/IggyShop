@@ -87,14 +87,22 @@ fun LoginScreen(navigationController: NavController) {
                             validState = validState
                         )
                     },
-                    valid = validState.value
+                    valid = validState.value,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(29.dp)
+                        .background(color = Color.LightGray, shape = RoundedCornerShape(35.dp))
                 )
                 Spacer(modifier = Modifier.height(35.dp))
 
                 CustomTextField(
                     state = passwordState,
                     placeholder = "Password",
-                    vectorResource = R.drawable.ic_eye_off
+                    vectorResource = R.drawable.ic_eye_off,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(29.dp)
+                        .background(color = Color.LightGray, shape = RoundedCornerShape(35.dp))
                 )
 
 

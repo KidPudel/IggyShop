@@ -19,10 +19,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
@@ -77,21 +79,22 @@ fun CustomTextField(
     placeholder: String,
     onValidate: () -> Unit = {},
     valid: Boolean = true,
-    vectorResource: Int? = null
+    vectorResource: Int? = null,
+    fontFamily: FontFamily = Fonts.montserratFamily,
+    fontWeight: FontWeight = FontWeight.Medium,
+    fontSize: TextUnit = 11.sp,
+    modifier: Modifier
 ) {
     val focusManager = LocalFocusManager.current
     BasicTextField(
         value = state.value,
         onValueChange = { entered: String -> state.value = entered },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(29.dp)
-            .background(color = Color.LightGray, shape = RoundedCornerShape(35.dp)),
+        modifier = modifier,
         textStyle = LocalTextStyle.current.copy(
             textAlign = TextAlign.Center,
-            fontFamily = Fonts.montserratFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 11.sp
+            fontFamily = fontFamily,
+            fontWeight = fontWeight,
+            fontSize = fontSize
         ),
         maxLines = 1,
         decorationBox = { innerTextField ->
@@ -100,17 +103,15 @@ fun CustomTextField(
                     Text(
                         text = placeholder,
                         color = Color.Gray,
-                        fontFamily = Fonts.montserratFamily,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 11.sp,
+                        fontWeight = fontWeight,
+                        fontSize = fontSize
                     )
                 } else if (state.value.isEmpty() && !valid) {
                     Text(
                         text = placeholder,
                         color = Color.Red,
-                        fontFamily = Fonts.montserratFamily,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 11.sp,
+                        fontWeight = fontWeight,
+                        fontSize = fontSize
                     )
                 }
                 if (vectorResource != null) {
