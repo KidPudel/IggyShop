@@ -27,6 +27,7 @@ class LoginViewModel @Inject constructor(private val getUserUseCase: GetUserUseC
                 _state.value = UserState(user = retrievedUser)
             }
         }
-        responseFromDB
+        // wait for the response (result)
+        responseFromDB.await()
     }
 }

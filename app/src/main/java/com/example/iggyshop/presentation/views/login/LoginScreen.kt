@@ -60,6 +60,8 @@ fun LoginScreen(navigationController: NavController) {
                         )
                     }
                 }),
+                backgroundColor = Color.Transparent,
+                elevation = 0.dp
             )
         }
     ) { scaffoldPadding ->

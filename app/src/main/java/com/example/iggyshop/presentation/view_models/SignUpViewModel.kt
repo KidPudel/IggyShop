@@ -30,7 +30,7 @@ class SignUpViewModel @Inject constructor(
                 _state.value = UserState(user = retrievedUser)
             }
         }
-        // wait for the result
+        // wait for the response (result)
         responseFromDB.await()
     }
 
