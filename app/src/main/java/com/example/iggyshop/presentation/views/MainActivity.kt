@@ -4,9 +4,7 @@ package com.example.iggyshop.presentation.views
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -33,15 +31,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.iggyshop.R
 import com.example.iggyshop.common.Fonts
 import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.presentation.views.login.LoginScreen
 import com.example.iggyshop.presentation.views.page_one.PageOneScreen
+import com.example.iggyshop.presentation.views.profile.ProfileScreen
 import com.example.iggyshop.presentation.views.sign_up.SignUp
 import com.example.iggyshop.ui.theme.IggyShopTheme
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.internal.assertThreadHoldsLock
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -59,7 +56,7 @@ class MainActivity : ComponentActivity() {
                     val navigationController = rememberNavController()
                     NavHost(
                         navController = navigationController,
-                        startDestination = Screens.PageOneScreen.route
+                        startDestination = Screens.SignUpScreen.route
                     ) {
                         composable(route = Screens.SignUpScreen.route) {
                             SignUp(navigationController = navigationController)
@@ -75,6 +72,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
+
             }
         }
     }
@@ -92,6 +90,7 @@ fun CustomTextField(
     fontSize: TextUnit = 11.sp,
     modifier: Modifier
 ) {
+    // to clear focus
     val focusManager = LocalFocusManager.current
     BasicTextField(
         value = state.value,
@@ -173,6 +172,7 @@ fun validate(
 
 @Composable
 fun MyBottomBar(navigationController: NavController) {
+
     val currentDestination = navigationController.currentDestination
     val bottomBarItems = listOf(
         BottomBarNavItem.Home,
@@ -181,23 +181,49 @@ fun MyBottomBar(navigationController: NavController) {
         BottomBarNavItem.Message,
         BottomBarNavItem.Profile,
     )
-    BottomAppBar(backgroundColor = MyColors.ghostWhite) {
-        BottomNavigation(backgroundColor = MyColors.ghostWhite) {
-            bottomBarItems.forEach { item ->
-                BottomNavigationItem(
-                    selected = item.route == currentDestination?.route,
-                    icon = {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = item.icon),
-                            contentDescription = "bottom bar icon",
-                            tint = Color.Gray
-                        )
-                    },
-                    onClick = {
-                        navigationController.navigate(route = item.route)
+    BottomNavigation(
+        backgroundColor = MyColors.whiteSmoke,
+        modifier = Modifier
+            .graphicsLayer(
+                shape = RoundedCornerShape(
+                    topStart = 30.dp,
+                    topEnd = 30.dp,
+                ),
+                // force bottom bar to fill size (fillMax'Width' doesn't work)
+                scaleX = 1.02f,
+                scaleY = 1.02f,
+                clip = true
+            ),
+    ) {
+        bottomBarItems.forEach { item ->
+            val itemBackgroundColor =
+                if (item.route == currentDestination?.route)
+                    MyColors.antiFlashWhite else MyColors.whiteSmoke
+
+
+            BottomNavigationItem(
+                selected = item.route == currentDestination?.route,
+                icon = {
+                    Card(
+                        shape = RoundedCornerShape(35.dp),
+                        backgroundColor = itemBackgroundColor,
+                        modifier = Modifier.size(40.dp),
+                        elevation = 0.dp
+                    ) {
+                        Box(modifier = Modifier.size(15.dp), contentAlignment = Alignment.Center) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = item.icon),
+                                contentDescription = "bottom bar icon",
+                                tint = Color.Gray,
+                            )
+                        }
                     }
-                )
-            }
+                },
+                onClick = {
+                    navigationController.navigate(route = item.route)
+                },
+                selectedContentColor = MyColors.antiFlashWhite
+            )
         }
     }
 }

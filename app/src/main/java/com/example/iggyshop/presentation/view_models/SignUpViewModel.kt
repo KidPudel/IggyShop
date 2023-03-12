@@ -19,7 +19,7 @@ class SignUpViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val addUserUseCase: AddUserUseCase
 ) : ViewModel() {
-    private val _state = mutableStateOf(UserState())
+    private val _state = mutableStateOf(value = UserState())
     val state: State<UserState>
         get() = _state
 

@@ -18,12 +18,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.iggyshop.R
+import com.example.iggyshop.common.Constants
 import com.example.iggyshop.common.Fonts
 import com.example.iggyshop.common.Fonts.montserratFamily
 import com.example.iggyshop.common.MyColors
@@ -130,13 +132,13 @@ fun SignUp(navigationController: NavController) {
                                 }
                             } else {
                                 // create a new user
-                                val newUser = User(
+                                Constants.user = User(
                                     firstName = firstNameState.value,
                                     lastName = lastNameState.value,
                                     email = emailState.value
                                 )
                                 // add them to a database
-                                signUpViewModel.addUser(newUser)
+                                signUpViewModel.addUser(Constants.user!!)
                                 currentScope.launch {
                                     scaffoldState.snackbarHostState.showSnackbar(
                                         message = "signed in successfully",

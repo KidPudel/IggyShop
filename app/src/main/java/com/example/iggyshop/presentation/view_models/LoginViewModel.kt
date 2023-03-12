@@ -21,8 +21,8 @@ class LoginViewModel @Inject constructor(private val getUserUseCase: GetUserUseC
 
     // get user from use case
     fun getUser(email: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            getUserUseCase.getUserFromDatabase(email).collectLatest { retrievedUser ->
+        viewModelScope.launch(context = Dispatchers.IO) {
+            getUserUseCase.getUserFromDatabase(email = email).collectLatest { retrievedUser ->
                 _state.value = UserState(user = retrievedUser)
             }
         }

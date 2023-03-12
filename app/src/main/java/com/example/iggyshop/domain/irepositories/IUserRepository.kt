@@ -14,4 +14,5 @@ interface IUserRepository {
      * @param user what user should be added to the database
      */
     suspend fun addUserToDatabase(user: UserDBModel)
+
 }

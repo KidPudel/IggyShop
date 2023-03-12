@@ -13,4 +13,5 @@ class UserRepository @Inject constructor(private val usersDatabase: UsersDatabas
     override suspend fun addUserToDatabase(user: UserDBModel) {
         usersDatabase.userDao().insertUser(user = user)
     }
+
 }

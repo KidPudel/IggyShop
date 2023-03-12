@@ -4,6 +4,7 @@ import com.example.iggyshop.data.database.model.toUser
 import com.example.iggyshop.data.repositories.UserRepository
 import com.example.iggyshop.domain.irepositories.IUserRepository
 import com.example.iggyshop.domain.models.User
+import com.example.iggyshop.presentation.views.UserState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -14,4 +15,5 @@ class GetUserUseCase @Inject constructor(private val userRepository: IUserReposi
         // if everything is okay, returns User, otherwise null
         emit(value = userFromDatabase?.toUser())
     }
+
 }

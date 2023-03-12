@@ -7,12 +7,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -21,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -50,7 +55,10 @@ fun PageOneScreen(navigationController: NavController) {
     val pageOneViewModel = hiltViewModel<PageOneViewModel>()
     val lazyLatestState = rememberLazyListState()
     val lazyFlashSaleState = rememberLazyListState()
+    val lazyDummyState = rememberLazyListState()
     val scaffoldState = rememberScaffoldState()
+
+    val scrollState = rememberScrollState()
 
     val searchState = remember { mutableStateOf(value = "") }
 
@@ -65,23 +73,26 @@ fun PageOneScreen(navigationController: NavController) {
         R.drawable.ic_robot to "Kids"
     )
 
+
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = Modifier
-            .fillMaxSize()
-            .background(color = MyColors.ghostWhite),
+            .fillMaxSize(),
         topBar = {
             PageOneTopBar()
         },
         bottomBar = {
             MyBottomBar(navigationController = navigationController)
         },
+        backgroundColor = MyColors.ghostWhite
     ) { scaffoldPadding ->
-        Box(modifier = Modifier.padding(paddingValues = scaffoldPadding)) {
+        Box(modifier = Modifier.padding(paddingValues = scaffoldPadding).background(color = MyColors.ghostWhite)) {
             Column(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(state = scrollState, enabled = true),
             ) {
 
                 CustomTextField(
@@ -141,11 +152,16 @@ fun PageOneScreen(navigationController: NavController) {
 
                 Spacer(modifier = Modifier.height(17.dp))
 
+                // flash sale list
                 Goods(
                     productType = "Flash Sale",
                     lazyListState = lazyFlashSaleState,
                     flashSaleGoodsState = pageOneViewModel.flashSaleGoodsState.value
                 )
+                Spacer(modifier = Modifier.height(17.dp))
+
+                // brand (dummy) list
+                Goods(productType = "Brands", lazyDummyState)
 
             }
         }
@@ -157,8 +173,12 @@ private fun Goods(
     productType: String,
     lazyListState: LazyListState,
     latestGoodsState: LatestGoodsState? = null,
-    flashSaleGoodsState: FlashSaleGoodsState? = null
+    flashSaleGoodsState: FlashSaleGoodsState? = null,
 ) {
+    // list of colors instead of data for the last list of brands (api hasn't been given)
+    val dummyList =
+        listOf(MyColors.midnightGreen, MyColors.resedaGreen, MyColors.chocolateCosmos)
+
     var currency: String
     // title + view all
     Row(modifier = Modifier.fillMaxWidth()) {
@@ -190,6 +210,7 @@ private fun Goods(
         Spacer(modifier = Modifier.width(11.dp))
         LazyRow(state = lazyListState, userScrollEnabled = true) {
             if (latestGoodsState != null) {
+                // latest part
                 items(items = latestGoodsState.latestGoods) { latestProduct ->
                     Card(
                         shape = RoundedCornerShape(9.dp),
@@ -247,6 +268,7 @@ private fun Goods(
                     }
                 }
             } else if (flashSaleGoodsState != null) {
+                // flash sale part
                 items(items = flashSaleGoodsState.flashSaleGoods) { flashSaleProduct ->
                     Card(
                         shape = RoundedCornerShape(35.dp),
@@ -303,6 +325,31 @@ private fun Goods(
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                 }
+            } else {
+                // brand part
+                items(items = dummyList) { myColor ->
+                    Card(
+                        shape = RoundedCornerShape(25.dp),
+                        modifier = Modifier
+                            .width(114.dp)
+                            .height(149.dp),
+                    ) {
+                        Box(
+                            modifier = Modifier.background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        myColor,
+                                        Color.Black
+                                    ),
+                                    startY = 20f
+                                )
+                            )
+                        ) {
+
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                }
             }
         }
     }
@@ -323,11 +370,13 @@ private fun PageOneTopBar() {
                 .fillMaxWidth()
                 .padding(start = 15.dp, end = 15.dp, top = 23.dp)
         ) {
+            // right side
             Icon(
                 modifier = Modifier.padding(bottom = 15.dp),
                 imageVector = ImageVector.vectorResource(R.drawable.ic_burger),
                 contentDescription = "burger button"
             )
+            // custom text builder (center)
             Text(
                 modifier = Modifier.padding(bottom = 15.dp),
                 text = buildAnnotatedString {
@@ -345,12 +394,7 @@ private fun PageOneTopBar() {
                 color = Color.Black,
                 fontSize = 20.sp
             )
-            CompositionLocalProvider(
-                LocalContentAlpha provides ContentAlpha.high,
-                LocalTextStyle provides MaterialTheme.typography.h5
-            ) {
-
-            }
+            // left size
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
