@@ -29,6 +29,7 @@ import com.example.iggyshop.presentation.views.Screens
 import com.example.iggyshop.presentation.views.isEmailValid
 import com.example.iggyshop.presentation.views.validate
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun LoginScreen(navigationController: NavController) {
@@ -114,7 +115,10 @@ fun LoginScreen(navigationController: NavController) {
                     onClick = {
                         // validate that email is valid
                         if (isEmailValid(emailState.value)) {
-                            loginViewModel.getUser(email = emailState.value)
+                            // check if user is in database (block to prevent not complete response)
+                            runBlocking {
+                                loginViewModel.getUser(email = emailState.value)
+                            }
                             // check if user is loaded from DB (valid user)
                             if (loginViewModel.state.value.user != null) {
                                 Constants.user = loginViewModel.state.value.user

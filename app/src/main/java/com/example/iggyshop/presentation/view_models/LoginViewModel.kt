@@ -8,6 +8,7 @@ import com.example.iggyshop.domain.use_cases.GetUserUseCase
 import com.example.iggyshop.presentation.views.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,11 +21,12 @@ class LoginViewModel @Inject constructor(private val getUserUseCase: GetUserUseC
         get() = _state
 
     // get user from use case
-    fun getUser(email: String) {
-        viewModelScope.launch(context = Dispatchers.IO) {
+    suspend fun getUser(email: String) {
+        val responseFromDB = viewModelScope.async(context = Dispatchers.IO) {
             getUserUseCase.getUserFromDatabase(email = email).collectLatest { retrievedUser ->
                 _state.value = UserState(user = retrievedUser)
             }
         }
+        responseFromDB
     }
 }

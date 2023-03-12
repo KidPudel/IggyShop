@@ -3,6 +3,7 @@ package com.example.iggyshop.presentation.views.profile
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,6 +45,7 @@ import com.example.iggyshop.common.Constants
 import com.example.iggyshop.common.Fonts
 import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.presentation.views.MyBottomBar
+import com.example.iggyshop.presentation.views.Screens
 
 @Composable
 fun ProfileScreen(navigationController: NavController) {
@@ -115,7 +117,9 @@ fun ProfileScreen(navigationController: NavController) {
                     leftIcon = R.drawable.ic_forward
                 )
                 Choice(title = "Help", rightIcon = R.drawable.ic_help)
-                Choice(title = "Log out", rightIcon = R.drawable.ic_log_out)
+                Choice(title = "Log out", rightIcon = R.drawable.ic_log_out, modifier = Modifier.size(40.dp).clickable {
+                    navigationController.navigate(route = Screens.SignUpScreen.route)
+                })
 
 
             }
@@ -194,13 +198,14 @@ fun Choice(
     title: String,
     rightIcon: Int,
     leftIcon: Int? = null,
-    balance: Int? = null
+    balance: Int? = null,
+    modifier: Modifier = Modifier.size(40.dp)
 ) {
     Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 41.dp), horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
         Card(
             shape = RoundedCornerShape(35.dp),
             backgroundColor = MyColors.antiFlashWhite,
-            modifier = Modifier.size(40.dp)
+            modifier = modifier
         ) {
             Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
 
@@ -223,7 +228,7 @@ fun Choice(
             if (leftIcon != null) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = leftIcon),
-                    contentDescription = "Forward",
+                    contentDescription = "left icon",
                 )
             } else if (balance != null) {
                 Text(

@@ -36,6 +36,7 @@ import com.example.iggyshop.presentation.views.Screens
 import com.example.iggyshop.presentation.views.isEmailValid
 import com.example.iggyshop.presentation.views.validate
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun SignUp(navigationController: NavController) {
@@ -121,8 +122,10 @@ fun SignUp(navigationController: NavController) {
                             lastNameState.value.isNotEmpty() &&
                             isEmailValid(emailState.value)
                         ) {
-                            // check if user is in database
-                            signUpViewModel.getUser(emailState.value)
+                            // check if user is in database (block to prevent not complete response)
+                            runBlocking {
+                                signUpViewModel.getUser(emailState.value)
+                            }
                             if (signUpViewModel.state.value.user != null) {
                                 currentScope.launch {
                                     scaffoldState.snackbarHostState.showSnackbar(
