@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
                     val navigationController = rememberNavController()
                     NavHost(
                         navController = navigationController,
-                        startDestination = Screens.SignUpScreen.route
+                        startDestination = Screens.PageOneScreen.route
                     ) {
                         composable(route = Screens.SignUpScreen.route) {
                             SignUp(navigationController = navigationController)
@@ -210,11 +210,12 @@ fun MyBottomBar(navigationController: NavController) {
                         modifier = Modifier.size(40.dp),
                         elevation = 0.dp
                     ) {
-                        Box(modifier = Modifier.size(15.dp), contentAlignment = Alignment.Center) {
+                        Box(contentAlignment = Alignment.Center) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(id = item.icon),
                                 contentDescription = "bottom bar icon",
                                 tint = Color.Gray,
+                                modifier = Modifier.width(15.dp)
                             )
                         }
                     }

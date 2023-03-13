@@ -207,7 +207,7 @@ fun Choice(
             backgroundColor = MyColors.antiFlashWhite,
             modifier = modifier
         ) {
-            Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
+            Box(contentAlignment = Alignment.Center) {
 
                 Icon(
                     imageVector = ImageVector.vectorResource(id = rightIcon),

@@ -86,7 +86,11 @@ fun PageOneScreen(navigationController: NavController) {
         },
         backgroundColor = MyColors.ghostWhite
     ) { scaffoldPadding ->
-        Box(modifier = Modifier.padding(paddingValues = scaffoldPadding).background(color = MyColors.ghostWhite)) {
+        Box(
+            modifier = Modifier
+                .padding(paddingValues = scaffoldPadding)
+                .background(color = MyColors.ghostWhite)
+        ) {
             Column(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -122,11 +126,14 @@ fun PageOneScreen(navigationController: NavController) {
                                 backgroundColor = MyColors.antiFlashWhite,
                                 shape = RoundedCornerShape(50.dp),
                             ) {
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(id = category.key),
-                                    contentDescription = "category",
-                                    modifier = Modifier.padding(horizontal = 13.dp)
-                                )
+                                Box(contentAlignment = Alignment.Center) {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = category.key),
+                                        contentDescription = category.value,
+                                        modifier = Modifier.padding(horizontal = 13.dp)
+                                    )
+
+                                }
                             }
                             Spacer(modifier = Modifier.height(11.dp))
                             Text(
@@ -224,8 +231,25 @@ private fun Goods(
                                 contentDescription = latestProduct.name,
                                 contentScale = ContentScale.Crop
                             )
+
+                            Box(
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .background(
+                                        // half of a card
+                                        brush = Brush.verticalGradient(
+                                            colorStops = arrayOf(
+                                                0.5f to Color.Transparent,
+                                                1.0f to Color.Black
+                                            ),
+                                        )
+                                    )
+                            )
+
                             Column(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .padding(7.dp),
                                 verticalArrangement = Arrangement.Bottom,
                                 horizontalAlignment = Alignment.Start
                             ) {
@@ -247,22 +271,59 @@ private fun Goods(
 
                                     }
                                 }
-                                Text(
-                                    text = latestProduct.name,
-                                    fontFamily = Fonts.poppinsFamily,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = Color.White,
-                                    fontSize = 9.sp,
-                                )
-                                currency = NumberFormat.getCurrencyInstance(Locale.US)
-                                    .format(latestProduct.price)
-                                Text(
-                                    text = currency,
-                                    fontFamily = Fonts.poppinsFamily,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = Color.White,
-                                    fontSize = 7.sp,
-                                )
+                                Box(
+                                    modifier = Modifier
+                                        .width(75.dp)
+                                        .height(26.dp)
+                                ) {
+                                    Text(
+                                        text = latestProduct.name,
+                                        fontFamily = Fonts.poppinsFamily,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = Color.White,
+                                        fontSize = 9.sp,
+                                    )
+
+                                }
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    currency = NumberFormat.getCurrencyInstance(Locale.US)
+                                        .format(latestProduct.price)
+                                    Box(
+                                        modifier = Modifier
+                                            .width(40.dp)
+                                            .height(9.dp)
+                                    ) {
+                                        Text(
+                                            text = currency,
+                                            fontFamily = Fonts.poppinsFamily,
+                                            fontWeight = FontWeight.SemiBold,
+                                            color = Color.White,
+                                            fontSize = 7.sp,
+                                        )
+
+                                    }
+                                    Card(
+                                        shape = RoundedCornerShape(35.dp),
+                                        backgroundColor = MyColors.antiFlashWhite,
+                                        modifier = Modifier.size(20.dp)
+                                    ) {
+                                        Box(
+                                            contentAlignment = Alignment.Center,
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_plus),
+                                                contentDescription = "add",
+                                                modifier = Modifier.size(7.dp)
+                                            )
+
+                                        }
+                                    }
+
+                                }
                             }
                         }
                     }
@@ -271,7 +332,7 @@ private fun Goods(
                 // flash sale part
                 items(items = flashSaleGoodsState.flashSaleGoods) { flashSaleProduct ->
                     Card(
-                        shape = RoundedCornerShape(35.dp),
+                        shape = RoundedCornerShape(11.dp),
                         modifier = Modifier
                             .width(174.dp)
                             .height(221.dp)
@@ -282,8 +343,59 @@ private fun Goods(
                                 contentDescription = flashSaleProduct.name,
                                 contentScale = ContentScale.Crop
                             )
+                            Box(
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .background(
+                                        brush = Brush.verticalGradient(
+                                            colorStops = arrayOf(
+                                                0.5f to Color.Transparent,
+                                                1.0f to Color.Black
+                                            )
+                                        )
+                                    )
+                            )
+                            Row(
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .padding(7.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.seller),
+                                    contentDescription = "seller avatar",
+                                    modifier = Modifier
+                                        .clip(shape = RoundedCornerShape(35.dp))
+                                        .border(
+                                            width = 1.dp,
+                                            color = Color.Gray,
+                                            shape = RoundedCornerShape(35.dp)
+                                        )
+                                        .size(25.dp)
+                                )
+                                Card(
+                                    shape = RoundedCornerShape(9.dp),
+                                    backgroundColor = Color.Red,
+                                    modifier = Modifier
+                                        .width(49.dp)
+                                        .height(18.dp)
+                                ) {
+                                    Box(contentAlignment = Alignment.Center) {
+                                        Text(
+                                            text = "${flashSaleProduct.discount}% off",
+                                            fontFamily = Fonts.poppinsFamily,
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 10.sp,
+                                            color = Color.White
+                                        )
+                                    }
+                                }
+                            }
                             Column(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .padding(7.dp),
                                 verticalArrangement = Arrangement.Bottom,
                                 horizontalAlignment = Alignment.Start
                             ) {
@@ -304,22 +416,77 @@ private fun Goods(
                                         )
                                     }
                                 }
-                                Text(
-                                    text = flashSaleProduct.name,
-                                    fontFamily = Fonts.poppinsFamily,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = Color.White,
-                                    fontSize = 13.sp,
-                                )
-                                currency = NumberFormat.getCurrencyInstance(Locale.US)
-                                    .format(flashSaleProduct.price)
-                                Text(
-                                    text = currency,
-                                    fontFamily = Fonts.poppinsFamily,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = Color.White,
-                                    fontSize = 10.sp,
-                                )
+                                Box(
+                                    modifier = Modifier
+                                        .width(87.dp)
+                                        .height(36.dp)
+                                ) {
+                                    Text(
+                                        text = flashSaleProduct.name,
+                                        fontFamily = Fonts.poppinsFamily,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = Color.White,
+                                        fontSize = 13.sp,
+                                    )
+
+                                }
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    currency = NumberFormat.getCurrencyInstance(Locale.US)
+                                        .format(flashSaleProduct.price)
+                                    Box(
+                                        modifier = Modifier
+                                            .width(43.dp)
+                                            .height(12.dp)
+                                    ) {
+                                        Text(
+                                            text = currency,
+                                            fontFamily = Fonts.poppinsFamily,
+                                            fontWeight = FontWeight.SemiBold,
+                                            color = Color.White,
+                                            fontSize = 10.sp,
+                                        )
+
+                                    }
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Card(
+                                            shape = RoundedCornerShape(35.dp),
+                                            modifier = Modifier.size(28.dp),
+                                            backgroundColor = MyColors.antiFlashWhite
+                                        ) {
+                                            Box(
+                                                contentAlignment = Alignment.Center,
+                                            ) {
+                                                Icon(
+                                                    painter = painterResource(id = R.drawable.ic_heart),
+                                                    contentDescription = "favourite",
+                                                    modifier = Modifier.width(12.dp)
+                                                )
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.width(5.dp))
+                                        Card(
+                                            shape = RoundedCornerShape(35.dp),
+                                            modifier = Modifier.size(35.dp),
+                                            backgroundColor = MyColors.antiFlashWhite
+                                        ) {
+                                            Box(
+                                                contentAlignment = Alignment.Center,
+                                            ) {
+                                                Icon(
+                                                    painter = painterResource(id = R.drawable.ic_plus),
+                                                    contentDescription = "add",
+                                                    modifier = Modifier.size(13.dp)
+                                                )
+                                            }
+                                        }
+
+                                    }
+
+                                }
                             }
                         }
                     }
