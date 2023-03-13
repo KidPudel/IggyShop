@@ -27,14 +27,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavArgumentBuilder
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.iggyshop.common.Fonts
 import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.presentation.views.login.LoginScreen
 import com.example.iggyshop.presentation.views.page_one.PageOneScreen
+import com.example.iggyshop.presentation.views.page_two.PageTwoScreen
 import com.example.iggyshop.presentation.views.profile.ProfileScreen
 import com.example.iggyshop.presentation.views.sign_up.SignUp
 import com.example.iggyshop.ui.theme.IggyShopTheme
@@ -69,6 +73,32 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = Screens.ProfileScreen.route) {
                             ProfileScreen(navigationController = navigationController)
+                        }
+                        composable(
+                            route = Screens.PageTwoScreen.route + "/{image}/{name}",
+                            arguments = listOf(
+                                // icon argument
+                                navArgument(name = "image", builder = {
+                                    type = NavType.StringType
+                                    nullable = true
+                                }
+                                ),
+                                // title argument
+                                navArgument(name = "name", builder = {
+                                    type = NavType.StringType
+                                    nullable = true
+                                })
+                            )
+                        ) { navBackStackEntry ->
+                            /* when composable is added to the back stack,
+                               provide it with arguments passed
+                               (get it by the key specified in navArgument)
+                            */
+                            PageTwoScreen(
+                                navigationController = navigationController,
+                                image = navBackStackEntry.arguments?.getString("image") ?: "error",
+                                name = navBackStackEntry.arguments?.getString("name") ?: "error"
+                            )
                         }
                     }
                 }

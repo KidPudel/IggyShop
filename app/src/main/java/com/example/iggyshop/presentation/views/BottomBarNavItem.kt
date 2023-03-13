@@ -2,6 +2,9 @@ package com.example.iggyshop.presentation.views
 
 import com.example.iggyshop.R
 
+/**
+ * to loop through items and display and navigate
+ */
 sealed class BottomBarNavItem(val route: String, val icon: Int) {
     object Home : BottomBarNavItem(route = "page_one_screen", icon = R.drawable.ic_home)
     object Heart : BottomBarNavItem(route = "heart_screen", icon = R.drawable.ic_heart)
