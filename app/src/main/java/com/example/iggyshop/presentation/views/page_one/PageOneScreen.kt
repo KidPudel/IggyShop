@@ -353,6 +353,7 @@ private fun Goods(
                             }
                         }
                     }
+                    Spacer(modifier = Modifier.width(12.dp))
                 }
             } else if (flashSaleGoodsState != null) {
                 // flash sale part
