@@ -141,7 +141,7 @@ fun LoginScreen(navigationController: NavController) {
                     shape = RoundedCornerShape(15.dp)
                 ) {
                     Text(
-                        text = "Sign up",
+                        text = "Login",
                         fontWeight = FontWeight.Bold,
                         fontFamily = Fonts.montserratFamily,
                         fontSize = 14.sp
