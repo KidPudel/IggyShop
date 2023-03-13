@@ -14,4 +14,5 @@ object MyColors {
     val midnightGreen = Color(red = 0, green = 95, blue = 115)
     val resedaGreen = Color(red = 133, green = 127, blue = 82)
     val chocolateCosmos = Color(red = 84, green = 11, blue = 14)
+    val ultraViolet = Color(red = 84, green = 85, blue = 137)
 }

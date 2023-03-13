@@ -43,12 +43,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.iggyshop.R
+import com.example.iggyshop.common.Constants
 import com.example.iggyshop.common.Fonts
 import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.presentation.view_models.PageOneViewModel
 import com.example.iggyshop.presentation.views.CustomTextField
 import com.example.iggyshop.presentation.views.MyBottomBar
 import com.example.iggyshop.presentation.views.Screens
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.*
 
 @Composable
@@ -113,9 +116,6 @@ fun PageOneScreen(navigationController: NavController) {
                         .background(color = MyColors.whiteSmoke, shape = RoundedCornerShape(35.dp))
                 )
                 Spacer(Modifier.height(17.dp))
-                Text(text = "Click me", modifier = Modifier.clickable {
-                    navigationController.navigate(route = Screens.PageTwoScreen.route + "/https://i.pinimg.com/564x/b8/a0/3e/b8a03ec1706800da821f0463aa9eaaad.jpg" + "/name")
-                })
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -161,7 +161,7 @@ fun PageOneScreen(navigationController: NavController) {
                     latestGoodsState = pageOneViewModel.latestGoodsState.value,
                     onNavigate = { image, name ->
                         navigationController.navigate(
-                            route = Screens.PageTwoScreen.route + "/{$image}" + "/{$name}"
+                            route = Screens.PageTwoScreen.route + "/$image" + "/$name"
                         )
                     }
                 )
@@ -246,7 +246,9 @@ private fun Goods(
                             .width(114.dp)
                             .height(149.dp)
                             .clickable {
-                                onNavigate(latestProduct.image_url, latestProduct.name)
+                                // to correctly pass url
+                                val encodedImageUrl = URLEncoder.encode(latestProduct.image_url, StandardCharsets.UTF_8.toString())
+                                onNavigate(encodedImageUrl, latestProduct.name)
                             }
                     ) {
                         Box(modifier = Modifier.fillMaxSize()) {
@@ -361,7 +363,8 @@ private fun Goods(
                             .width(174.dp)
                             .height(221.dp)
                             .clickable {
-                                onNavigate(flashSaleProduct.image_url, flashSaleProduct.name)
+                                val encodedImage = URLEncoder.encode(flashSaleProduct.image_url, StandardCharsets.UTF_8.toString())
+                                onNavigate(encodedImage, flashSaleProduct.name)
                             }
                     ) {
                         Box(modifier = Modifier.fillMaxSize()) {
@@ -593,7 +596,7 @@ private fun PageOneTopBar() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(R.drawable.avatar),
+                    painter = painterResource(Constants.currentAvatar.value),
                     contentDescription = "avatar",
                     modifier = Modifier
                         .height(30.dp)

@@ -26,6 +26,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,6 +51,14 @@ import com.example.iggyshop.presentation.views.Screens
 
 @Composable
 fun ProfileScreen(navigationController: NavController) {
+    val avatars = listOf(
+        R.drawable.avatar,
+        R.drawable.avatar_man,
+        R.drawable.avatar_girl_first,
+        R.drawable.avatar_girl_second,
+    )
+    // var currentAvatarIndex = 0
+    val currentAvatar = remember { Constants.currentAvatar }
     Scaffold(
         topBar = {
             ProfileTopBar()
@@ -68,7 +78,7 @@ fun ProfileScreen(navigationController: NavController) {
                     .matchParentSize()
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.avatar),
+                    painter = painterResource(id = currentAvatar.value),
                     contentDescription = "avatar",
                     modifier = Modifier
                         .size(61.dp)
@@ -81,7 +91,18 @@ fun ProfileScreen(navigationController: NavController) {
                     fontFamily = Fonts.montserratFamily,
                     fontWeight = FontWeight.Medium,
                     color = Color.Gray,
-                    fontSize = 8.sp
+                    fontSize = 8.sp,
+                    modifier = Modifier.clickable {
+                        // change avatar
+                        currentAvatar.value =
+                            avatars.elementAt(
+                                if (avatars.indexOf(currentAvatar.value) == avatars.size - 1) {
+                                    0
+                                } else {
+                                    avatars.indexOf(currentAvatar.value) + 1
+                                }
+                            )
+                    }
                 )
                 Spacer(modifier = Modifier.height(17.dp))
                 Text(
@@ -97,29 +118,38 @@ fun ProfileScreen(navigationController: NavController) {
 
                 Choice(
                     title = "Trade store",
-                    rightIcon = R.drawable.ic_credit_card,
-                    leftIcon = R.drawable.ic_forward
+                    leftIcon = R.drawable.ic_credit_card,
+                    rightIcon = R.drawable.ic_forward
                 )
                 Choice(
                     title = "Payment method",
-                    rightIcon = R.drawable.ic_credit_card,
-                    leftIcon = R.drawable.ic_forward
+                    leftIcon = R.drawable.ic_credit_card,
+                    rightIcon = R.drawable.ic_forward
                 )
-                Choice(title = "Balance", rightIcon = R.drawable.ic_credit_card, balance = 1593)
                 Choice(
-                    title = "Trade history",
-                    rightIcon = R.drawable.ic_credit_card,
+                    title = "Balance",
+                    leftIcon = R.drawable.ic_credit_card,
                     balance = 1593
                 )
                 Choice(
-                    title = "Restore Purchase",
-                    rightIcon = R.drawable.ic_restore,
-                    leftIcon = R.drawable.ic_forward
+                    title = "Trade history",
+                    leftIcon = R.drawable.ic_credit_card,
+                    rightIcon = R.drawable.ic_forward
                 )
-                Choice(title = "Help", rightIcon = R.drawable.ic_help)
-                Choice(title = "Log out", rightIcon = R.drawable.ic_log_out, modifier = Modifier.size(40.dp).clickable {
-                    navigationController.navigate(route = Screens.SignUpScreen.route)
-                })
+                Choice(
+                    title = "Restore Purchase",
+                    leftIcon = R.drawable.ic_restore,
+                    rightIcon = R.drawable.ic_forward
+                )
+                Choice(title = "Help", leftIcon = R.drawable.ic_help)
+                Choice(
+                    title = "Log out",
+                    leftIcon = R.drawable.ic_log_out,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable {
+                            navigationController.navigate(route = Screens.SignUpScreen.route)
+                        })
 
 
             }
@@ -131,7 +161,7 @@ fun ProfileScreen(navigationController: NavController) {
 @Composable
 private fun ProfileTopBar() {
     TopAppBar(
-        backgroundColor = MyColors.ghostWhite,
+        backgroundColor = Color.Transparent,
         elevation = 0.dp,
         modifier = Modifier.height(80.dp),
     ) {
@@ -196,12 +226,18 @@ fun UploadBottom() {
 @Composable
 fun Choice(
     title: String,
-    rightIcon: Int,
-    leftIcon: Int? = null,
+    leftIcon: Int,
+    rightIcon: Int? = null,
     balance: Int? = null,
     modifier: Modifier = Modifier.size(40.dp)
 ) {
-    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 41.dp), horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 41.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Card(
             shape = RoundedCornerShape(35.dp),
             backgroundColor = MyColors.antiFlashWhite,
@@ -210,7 +246,7 @@ fun Choice(
             Box(contentAlignment = Alignment.Center) {
 
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = rightIcon),
+                    imageVector = ImageVector.vectorResource(id = leftIcon),
                     contentDescription = title,
                     modifier = Modifier.size(24.dp)
                 )
@@ -225,9 +261,9 @@ fun Choice(
             fontSize = 14.sp
         )
         Box(contentAlignment = Alignment.CenterEnd, modifier = Modifier.weight(1f)) {
-            if (leftIcon != null) {
+            if (rightIcon != null) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = leftIcon),
+                    imageVector = ImageVector.vectorResource(id = rightIcon),
                     contentDescription = "left icon",
                 )
             } else if (balance != null) {
