@@ -1,5 +1,5 @@
 # IggyShop
-The shop app with following features:
+## The shop app developed with following features:
 - database
   - sign up
   - login
@@ -7,13 +7,13 @@ The shop app with following features:
 - navigation
 - changing avatars
 
-made with:
+## made with:
 - android
 - jetpack compose (UI)
 - retrofit (api)
 - room (database)
 
-Showcase:  
+## Showcase:  
 
 <div style= "text-align: left;"><img src="https://user-images.githubusercontent.com/63263301/224849756-4e8ebf3d-cc27-4dff-9a32-24bee6392ddc.png" height="520"/></div> 
 <div style= "text-align: left;"><img src="https://user-images.githubusercontent.com/63263301/224849903-711a2561-102d-4a05-9749-3df2db07ea83.png" height="520"/></div> 
