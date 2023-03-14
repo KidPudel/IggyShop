@@ -100,6 +100,7 @@ fun LoginScreen(navigationController: NavController) {
                 )
                 Spacer(modifier = Modifier.height(35.dp))
 
+                // i would validate by password instead of email/login
                 CustomTextField(
                     state = passwordState,
                     placeholder = "Password",

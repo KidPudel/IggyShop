@@ -184,6 +184,8 @@ fun isEmailValid(email: String): Boolean {
 
 /**
  * validate that the address is valid and set corresponding states
+ * I would validate on the server and every click, so user would make lesser steps
+ * (+ validate by password is better)
  */
 fun validate(
     emailState: MutableState<String>,
