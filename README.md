@@ -3,6 +3,7 @@
 - database
   - sign up
   - login
+- email validation
 - API
 - navigation
 - changing avatars
