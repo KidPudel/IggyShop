@@ -12,7 +12,7 @@
 - Android
 - Kotlin
 - Coroutines
-- Flow or LiveData or RX
+- Flow
 - Dagger
 - MVVM
 - Jetpack Compose
