@@ -9,10 +9,17 @@
 - changing avatars
 
 ## made with:
-- android
-- jetpack compose (UI)
-- retrofit (api)
-- room (database)
+- Android
+- Kotlin
+- Coroutines
+- Flow or LiveData or RX
+- Dagger
+- MVVM
+- Jetpack Compose
+- Clean architecture
+- Retrofit (api)
+- Room (database)
+- Multimodularity
 
 ## Showcase:  
 
