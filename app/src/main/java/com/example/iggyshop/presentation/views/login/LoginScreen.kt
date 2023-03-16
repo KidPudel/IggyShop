@@ -20,14 +20,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.iggyshop.R
 import com.example.iggyshop.common.Constants
+import com.example.iggyshop.common.EmailValidation.isEmailValid
+import com.example.iggyshop.common.EmailValidation.validate
 import com.example.iggyshop.common.Fonts
 import com.example.iggyshop.common.MyColors
 import com.example.iggyshop.domain.models.User
 import com.example.iggyshop.presentation.view_models.LoginViewModel
 import com.example.iggyshop.presentation.views.CustomTextField
 import com.example.iggyshop.presentation.views.Screens
-import com.example.iggyshop.presentation.views.isEmailValid
-import com.example.iggyshop.presentation.views.validate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
