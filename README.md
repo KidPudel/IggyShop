@@ -19,6 +19,7 @@
 - Clean architecture
 - Retrofit (api)
 - Room (database)
+- Unit tests
 - Multimodularity
 
 ## Showcase:  
