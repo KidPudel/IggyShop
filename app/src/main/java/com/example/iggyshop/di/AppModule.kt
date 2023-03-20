@@ -1,26 +1,22 @@
 package com.example.iggyshop.di
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.iggyshop.common.Constants.BASE_URL
-import com.example.iggyshop.data.database.UsersDatabase
-import com.example.iggyshop.data.remote.IGoodsApi
-import com.example.iggyshop.data.repositories.GoodsRepository
-import com.example.iggyshop.data.repositories.UserRepository
-import com.example.iggyshop.domain.irepositories.IGoodsRepository
-import com.example.iggyshop.domain.irepositories.IUserRepository
+import com.example.shop_data.data.remote.IGoodsApi
+import com.example.shop_data.data.repositories.GoodsRepository
+import com.example.shop_data.data.repositories.UserRepository
+import com.example.shop_data.data.database.UsersDatabase
+import com.example.shop_domain.domain.irepositories.IGoodsRepository
+import com.example.shop_domain.domain.irepositories.IUserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-import kotlin.coroutines.coroutineContext
 
 @Module
 @InstallIn(SingletonComponent::class)
