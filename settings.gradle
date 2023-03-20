@@ -14,3 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "IggyShop"
 include ':app'
+include ':shop:shop_data'
+include ':shop:shop_domain'
+include ':shop:shop_presentation'
+include ':common'
