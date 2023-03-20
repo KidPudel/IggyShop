@@ -20,7 +20,7 @@
 - Retrofit (api)
 - Room (database)
 - Unit tests
-- Multimodularity
+- Multimodularity (app, common, shop:shop_data, shop:shop_domain, shop:shop_presentation)
 
 ## Showcase:  
 
